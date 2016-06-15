@@ -20,41 +20,6 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> itemsAdapter;
     ListView lvItems;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        readItems();
-
-        lvItems = (ListView) findViewById(R.id.lvItems);
-       // items = new ArrayList<>();
-        itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
-        lvItems.setAdapter(itemsAdapter);
-        //items.add("First Item");
-       // items.add("Second Item");
-        setupListViewListener();
-    }
-
-    public void onAddItem(View v) {
-        EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
-        String itemText = etNewItem.getText().toString();
-        itemsAdapter.add(itemText);
-        etNewItem.setText("");
-        writeItems();
-    }
- private  void setupListViewListener(){
-     lvItems.setOnItemLongClickListener(
-             new AdapterView.OnItemLongClickListener(){
-                 @Override
-                 public boolean onItemLongClick(AdapterView<?> adapter, View item, int position, long id) {
-                     items.remove(position);
-                     itemsAdapter.notifyDataSetChanged();
-                     writeItems();
-                     return true;
-                 }
-             }
-     );
- }
     private void readItems(){
         File fileDir = getFilesDir();
         File todoFile = new File(fileDir,"todo.txt");
@@ -72,6 +37,46 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        readItems();
+
+        lvItems = (ListView) findViewById(R.id.lvItems);
+       // items = new ArrayList<>();
+        itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
+        lvItems.setAdapter(itemsAdapter);
+        //items.add("First Item");
+       // items.add("Second Item");
+        setupListViewListener();
+
+
+    }
+
+
+ private  void setupListViewListener(){
+     lvItems.setOnItemLongClickListener(
+             new AdapterView.OnItemLongClickListener(){
+                 @Override
+                 public boolean onItemLongClick(AdapterView<?> adapter, View item, int position, long id) {
+                     items.remove(position);
+                     itemsAdapter.notifyDataSetChanged();
+                     writeItems();
+                     return true;
+                 }
+             }
+     );
+ }
+
+    public void onAddItem(View v) {
+        EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
+        String itemText = etNewItem.getText().toString();
+        itemsAdapter.add(itemText);
+        etNewItem.setText("");
+        writeItems();
     }
 
 
